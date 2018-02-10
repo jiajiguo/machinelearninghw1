@@ -18,7 +18,15 @@ def read_file(filename):
         for row in reader:
             data.append(row[0].split())    
     return data
-
+#write_file(filename=str, list)
+def write_file(filename, lst):
+    f_wri = open(filename,'w')
+    for i in range(len(lst)):
+        for j in range(len(lst[0])):
+            f_wri.write('%8.6s'% lst[i][j])
+        f_wri.write('\n')
+    f_wri.close()
+            
 #vector_zoom (list, float)
 def vector_zoom(vector, times):
     new_vect = numpy.zeros((len(vector), len(vector[0])))
@@ -43,24 +51,28 @@ for i in range(len(raw_data)):
         
 for i in range(len(raw_data)):
     for j in range(len(raw_data[0])-1):
-        if raw_data[i][j] == 'x' and raw_data[i][9] == 'positive':
+        if raw_data[i][j] == 'x' and raw_data[i][-1] == 'positive':
             posi_times[j][0] = posi_times[j][0] + 1
-        if raw_data[i][j] == 'o' and raw_data[i][9] == 'positive':
+        if raw_data[i][j] == 'o' and raw_data[i][-1] == 'positive':
             posi_times[j][1] = posi_times[j][1] + 1 
-        if raw_data[i][j] == 'b' and raw_data[i][9] == 'positive':
+        if raw_data[i][j] == 'b' and raw_data[i][-1] == 'positive':
             posi_times[j][2] = posi_times[j][2] + 1 
-        if raw_data[i][j] == 'x' and raw_data[i][9] == 'negative':
+        if raw_data[i][j] == 'x' and raw_data[i][-1] == 'negative':
             nega_times[j][0] = nega_times[j][0] + 1
-        if raw_data[i][j] == 'o' and raw_data[i][9] == 'negative':
+        if raw_data[i][j] == 'o' and raw_data[i][-1] == 'negative':
             nega_times[j][1] = nega_times[j][1] + 1 
-        if raw_data[i][j] == 'b' and raw_data[i][9] == 'negative':
+        if raw_data[i][j] == 'b' and raw_data[i][-1] == 'negative':
             nega_times[j][2] = nega_times[j][2] + 1
-            
+                       
 #conditional probability => c_prob
 posi_c_prob = vector_zoom(posi_times, float(1)/float(posi_total))
 nega_c_prob = vector_zoom(nega_times, float(1)/float(nega_total))
 
+write_file('posi_c_prob.txt', posi_c_prob)
+write_file('nega_c_prob.txt', nega_c_prob) 
+
 right_num = 0
+prob_in_test = numpy.zeros((len(raw_test),1))
 for i in range(len(raw_test)):
     curr = raw_test[i]
     #evidence also names as normalizing constant, from wikipedia 
@@ -84,8 +96,10 @@ for i in range(len(raw_test)):
     else:
         temp = 'negative'
     if temp == curr[-1]:
+        print i
         right_num = right_num + 1
+    prob_in_test[i] = evi_p/(evi_p + evi_n)
 
 print 'so the correct rate is ', right_num, '/', len(raw_test)
 print 'correct rate is', float(right_num) / float(len(raw_test))
-            
+write_file('prob_in_test.txt', prob_in_test)
