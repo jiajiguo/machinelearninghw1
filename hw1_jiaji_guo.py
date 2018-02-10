@@ -96,7 +96,7 @@ for i in range(len(raw_test)):
     else:
         temp = 'negative'
     if temp == curr[-1]:
-        print i
+        print 'index', i, 'is same with estimation'
         right_num = right_num + 1
     prob_in_test[i] = evi_p/(evi_p + evi_n)
 
