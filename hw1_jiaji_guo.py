@@ -78,6 +78,7 @@ for i in range(len(raw_test)):
         if curr[row] == 'b':
             evi_p = evi_p * posi_c_prob[row][2]
             evi_n = evi_n * nega_c_prob[row][2]
+    #count the number of correct times, evaluate the model
     if evi_p > evi_n :
         temp = 'positive'
     else:
