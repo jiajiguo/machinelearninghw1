@@ -36,9 +36,9 @@ raw_data = read_file(f_in)
 raw_test = read_file(f_test)
 
 for i in range(len(raw_data)):
-    if raw_data[i][9] == 'positive':
+    if raw_data[i][-1] == 'positive':
         posi_total = posi_total + 1
-    if raw_data[i][9] == 'negative':
+    if raw_data[i][-1] == 'negative':
         nega_total = nega_total + 1
         
 for i in range(len(raw_data)):
@@ -83,7 +83,7 @@ for i in range(len(raw_test)):
         temp = 'positive'
     else:
         temp = 'negative'
-    if temp == curr[9]:
+    if temp == curr[-1]:
         right_num = right_num + 1
 
 print 'so the correct rate is ', right_num, '/', len(raw_test)
